@@ -1,22 +1,34 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Copy.Factories;
 using Npgsql;
 
 namespace Copy
 {
-    static class Copy
+    class Copy<T>
     {
-        public static async Task InsertAsync<T>(IEnumerable<T> entities, NpgsqlConnection conn)
+        private readonly string _sql;
+        private readonly NpgsqlConnection _conn;
+        private readonly Action<NpgsqlBinaryImporter, T> _write;
+
+        public Copy(CopyComponents<T> components,NpgsqlConnection conn)
         {
-            await conn.OpenAsync().ConfigureAwait(false);
-            using var writer = conn.BeginBinaryImport(SqlFactory.GetSql<T>());
+            _conn = conn;
+            _sql = components.Sql;
+            _write = components.Write;
+        }
 
-            var write = DelegateFactory.GetDelegate<T>();
-            foreach (var entity in entities)
-                write(writer, entity);
+        public async Task InsertAsync(IEnumerable<T> entities)
+        {
+            await _conn.OpenAsync().ConfigureAwait(false);
+            using (var writer = _conn.BeginBinaryImport(_sql))
+            {
+                foreach (var entity in entities)
+                    _write(writer, entity);
 
-            await writer.CompleteAsync().ConfigureAwait(false);
+                await writer.CompleteAsync().ConfigureAwait(false);
+            }
         }
     }
 }

@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Copy", "Copy\Copy.csproj", "{F5DB72DD-D53A-49ED-8578-5D3646069EB1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Copy.Tests", "Copy.Tests\Copy.Tests.csproj", "{5C3CC57D-3125-499F-8BEC-2724D31DCCB1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{F5DB72DD-D53A-49ED-8578-5D3646069EB1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F5DB72DD-D53A-49ED-8578-5D3646069EB1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F5DB72DD-D53A-49ED-8578-5D3646069EB1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5C3CC57D-3125-499F-8BEC-2724D31DCCB1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C3CC57D-3125-499F-8BEC-2724D31DCCB1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C3CC57D-3125-499F-8BEC-2724D31DCCB1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C3CC57D-3125-499F-8BEC-2724D31DCCB1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

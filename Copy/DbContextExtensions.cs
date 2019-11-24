@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Npgsql;
@@ -7,10 +8,17 @@ namespace Copy
 {
     public static class DbContextExtensions
     {
-        public static Task BulkCopyAsync<T>(this DbContext context, IEnumerable<T> entities)
+        public static async Task BulkCopyAsync<T>(this DbContext context, IEnumerable<T> entities)
         {
-            var conn = context.Database.GetDbConnection();
-            return Copy.InsertAsync(entities, (NpgsqlConnection) conn);
+            try
+            {
+                var copy = CopyFactory.GetCopy<T>(context);
+                await copy.InsertAsync(entities).ConfigureAwait(false);
+            }
+            catch (Exception e)
+            {
+                throw new CopyException(e);
+            }
         }
     }
 }
