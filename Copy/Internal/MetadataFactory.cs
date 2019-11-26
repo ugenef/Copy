@@ -1,42 +1,39 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Reflection;
-using System.Text.RegularExpressions;
-using Copy.Factories;
-using Copy.TypeMapper;
+using Copy.Internal.Models;
+using Copy.Internal.TypeMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using NpgsqlTypes;
 
-namespace Copy
+namespace Copy.Internal
 {
     class MetadataFactory
     {
-        private readonly Regex _wordInCamelCase =
-            new Regex(@"([A-Z][a-z]*)", RegexOptions.Compiled);
-
         private readonly WriteMethodFactory _writeMethodFactory = new WriteMethodFactory();
 
         public MetadataForModel GetMetadata<T>(DbContext context)
         {
             var entityType = context.Model.FindEntityType(typeof(T));
-            
+
             return new MetadataForModel
             {
                 TableName = entityType.GetTableName(),
-                EmitInfos = ExtractEmitInfo(entityType)
+                EmitInfos = ExtractEmitInfo<T>(entityType, context.GetType())
             };
         }
 
-        private EmitInfo[] ExtractEmitInfo(IEntityType entityType)
+        private EmitInfo[] ExtractEmitInfo<T>(IEntityType entityType, Type contextType)
         {
             var props = entityType.GetProperties();
+
             return props.Select(p =>
                 {
-                    
-                    var dbType = GetDbType(p.PropertyInfo);
+                    var dbType = GetDbType(p.PropertyInfo, contextType);
                     return new EmitInfo
                     {
-                        PostgresName =p.GetColumnName(),
+                        PostgresName = p.GetColumnName(),
                         Getter = p.PropertyInfo.GetMethod,
                         PostgresType = dbType,
                         WriteMethod = _writeMethodFactory.GetWriteMethod(p.PropertyInfo.PropertyType, dbType)
@@ -45,15 +42,9 @@ namespace Copy
                 .ToArray();
         }
 
-        private NpgsqlDbType? GetDbType(PropertyInfo propertyInfo)
+        private NpgsqlDbType? GetDbType(PropertyInfo propertyInfo, Type contextType)
         {
-            return CopyTypeMapper.GetDbType(propertyInfo.DeclaringType, propertyInfo.Name);
-        }
-
-        private string ConvertToSnakeCase(string camelCase)
-        {
-            var words = _wordInCamelCase.Matches(camelCase);
-            return string.Join('_', words).ToLower();
+            return TypeMappingStorage.TryGetDbType(contextType, propertyInfo.DeclaringType, propertyInfo.Name);
         }
     }
 }

@@ -7,7 +7,7 @@ using Xunit;
 
 namespace Copy.Tests
 {
-    public class Tests
+    public class SimpleTest
     {
         [Fact]
         public async Task ShouldWorkAtLeast()
@@ -15,7 +15,7 @@ namespace Copy.Tests
             NpgsqlConnection.GlobalTypeMapper.MapEnum<CallType>("call_type_enum");
             using (var db = new BillingContext())
             {
-                await db.BulkCopyAsync(new[] {new Call()});
+                await db.BulkCopyAsync(new[] {new Call {CalledNumber = "bc"}});
             }
         }
     }

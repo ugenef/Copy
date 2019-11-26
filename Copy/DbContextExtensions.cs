@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Copy.Internal;
 using Microsoft.EntityFrameworkCore;
-using Npgsql;
 
 namespace Copy
 {

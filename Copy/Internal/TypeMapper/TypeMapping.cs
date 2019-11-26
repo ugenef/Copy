@@ -1,23 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using NpgsqlTypes;
 
-namespace Copy.TypeMapper
+namespace Copy.Internal.TypeMapper
 {
-    public class CopyTypeMapping
+    class TypeMapping
     {
         private readonly Dictionary<string, NpgsqlDbType> _propertyMappings =
             new Dictionary<string, NpgsqlDbType>();
 
-        public CopyTypeMapping MapProperty(string name, NpgsqlDbType dbType)
+        public void MapProperty(string name, NpgsqlDbType dbType)
         {
             if (_propertyMappings.ContainsKey(name))
-                throw new Exception($"Property {name} is mapped already");
+                throw new CopyException($"Property {name} is mapped already");
             _propertyMappings[name] = dbType;
-            return this;
         }
 
-        internal NpgsqlDbType? GetDbType(string propertyName)
+        public NpgsqlDbType? GetDbType(string propertyName)
         {
             _propertyMappings.TryGetValue(propertyName, out var dbType);
             if (dbType == default)

@@ -4,7 +4,7 @@ using System.Reflection;
 using Npgsql;
 using NpgsqlTypes;
 
-namespace Copy.Factories
+namespace Copy.Internal
 {
     class WriteMethodFactory
     {

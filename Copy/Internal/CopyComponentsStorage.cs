@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using Copy.Internal.Models;
 
-namespace Copy
+namespace Copy.Internal
 {
     class CopyComponentsStorage
     {

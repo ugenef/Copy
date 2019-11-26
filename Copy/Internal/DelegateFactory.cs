@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections.Concurrent;
-using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
-using Copy.TypeMapper;
+using Copy.Internal.Models;
 using GrEmit;
 using Npgsql;
-using NpgsqlTypes;
 
-namespace Copy.Factories
+namespace Copy.Internal
 {
     class DelegateFactory
     {
@@ -26,14 +23,14 @@ namespace Copy.Factories
                 il.Ldarg(0);
                 il.Callnonvirt(GetStartRowMethod());
 
-                foreach (var prop in metadata.EmitInfos)
+                foreach (var emitInfo in metadata.EmitInfos)
                 {
                     il.Ldarg(0);
                     il.Ldarg(1);
-                    il.Callnonvirt(prop.Getter);
-                    if (prop.PostgresType != null)
-                        il.Ldc_I4((int) prop.PostgresType.Value);
-                    il.Callnonvirt(prop.WriteMethod);
+                    il.Callnonvirt(emitInfo.Getter);
+                    if (emitInfo.PostgresType != null)
+                        il.Ldc_I4((int) emitInfo.PostgresType.Value);
+                    il.Callnonvirt(emitInfo.WriteMethod);
                 }
 
                 il.Ret();

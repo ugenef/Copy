@@ -1,7 +1,7 @@
 ﻿using System;
 using Npgsql;
 
-namespace Copy
+namespace Copy.Internal.Models
 {
     class CopyComponents<T>
     {

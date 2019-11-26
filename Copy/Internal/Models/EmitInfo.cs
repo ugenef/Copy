@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using NpgsqlTypes;
 
-namespace Copy
+namespace Copy.Internal.Models
 {
     class EmitInfo
     {

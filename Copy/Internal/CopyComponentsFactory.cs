@@ -1,8 +1,7 @@
-﻿using System;
-using Copy.Factories;
+﻿using Copy.Internal.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Copy
+namespace Copy.Internal
 {
     class CopyComponentsFactory
     {

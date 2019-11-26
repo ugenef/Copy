@@ -1,8 +1,8 @@
-﻿using Copy.Factories;
+﻿using Copy.Internal.Models;
 using Microsoft.EntityFrameworkCore;
 using Npgsql;
 
-namespace Copy
+namespace Copy.Internal
 {
     static class CopyFactory
     {

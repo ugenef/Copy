@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Reflection;
-using System.Text.RegularExpressions;
+﻿using System.Linq;
+using Copy.Internal.Models;
 
-namespace Copy.Factories
+namespace Copy.Internal
 {
     class SqlFactory
     {

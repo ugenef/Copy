@@ -1,6 +1,4 @@
-﻿using System.Reflection;
-
-namespace Copy
+﻿namespace Copy.Internal.Models
 {
     class MetadataForModel
     {

@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Threading.Tasks;
-using Copy.Factories;
+using Copy.Internal.Models;
 using Npgsql;
 
-namespace Copy
+namespace Copy.Internal
 {
     class Copy<T>
     {
@@ -12,7 +13,7 @@ namespace Copy
         private readonly NpgsqlConnection _conn;
         private readonly Action<NpgsqlBinaryImporter, T> _write;
 
-        public Copy(CopyComponents<T> components,NpgsqlConnection conn)
+        public Copy(CopyComponents<T> components, NpgsqlConnection conn)
         {
             _conn = conn;
             _sql = components.Sql;
@@ -21,7 +22,9 @@ namespace Copy
 
         public async Task InsertAsync(IEnumerable<T> entities)
         {
-            await _conn.OpenAsync().ConfigureAwait(false);
+            if (_conn.State != ConnectionState.Open)
+                await _conn.OpenAsync().ConfigureAwait(false);
+            
             using (var writer = _conn.BeginBinaryImport(_sql))
             {
                 foreach (var entity in entities)
