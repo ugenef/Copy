@@ -1,7 +1,7 @@
 # Copy
 
 Copy is an Npgsql extension library for fast and effective row import to PostgreSQL.
-Copy works as an extension-method for Entity Framework Core.
+Copy works as an extension-method for `DbContext` Entity Framework Core.
 Supports .NET Standart 2.1 
 ### How to use:
 Call extension method on your DbContext and pass IEnumerable of
@@ -30,7 +30,7 @@ public class BillingContext : DbContext
                     .MapProperty(nameof(Call.Duration), NpgsqlDbType.Integer)
                     .MapProperty(nameof(Call.StartTime), NpgsqlDbType.Timestamp)));
         }
-    
+ }   
 ```
 ### How it works?
 Copy is a smart wrapper above `NpgsqlBinaryImporter` class from Npgsql Data Provider.
