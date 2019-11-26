@@ -84,7 +84,7 @@ The library saves methods for different DbContexts separately. This means that y
 
 ### Links
 - See [PostgreSQL Docs](https://www.postgresql.org/docs/current/sql-copy.html) to find out more about `COPY`
-- Using `NpgsqlBinaryImporter` in [Npgsql Docs](https://www.npgsql.org/doc/copy.html) 
+- Using of `NpgsqlBinaryImporter` in [Npgsql Docs](https://www.npgsql.org/doc/copy.html) 
 
 ### TODO
 - Write more tests
