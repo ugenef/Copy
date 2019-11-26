@@ -29,7 +29,7 @@ namespace Copy.Internal
                     il.Ldarg(1);
                     il.Callnonvirt(emitInfo.Getter);
                     if (emitInfo.PostgresType != null)
-                        il.Ldc_I4((int) emitInfo.PostgresType.Value);
+                        il.Ldstr(emitInfo.PostgresType);
                     il.Callnonvirt(emitInfo.WriteMethod);
                 }
 

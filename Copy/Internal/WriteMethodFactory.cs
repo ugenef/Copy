@@ -8,18 +8,11 @@ namespace Copy.Internal
 {
     class WriteMethodFactory
     {
-        public MethodInfo GetWriteMethod(Type paramType, NpgsqlDbType? dbType)
+        public MethodInfo GetWriteMethod(Type paramType)
         {
-            var paramTypes = GetParamTypes(paramType, dbType);
+            var paramTypes = new[] {paramType, typeof(string)};
 
             return MakeGenericMethod(paramTypes);
-        }
-
-        private Type[] GetParamTypes(Type paramType, NpgsqlDbType? dbType)
-        {
-            return dbType == null ? 
-                new[] {paramType} : 
-                new[] {paramType, typeof(NpgsqlDbType)};
         }
 
         private MethodInfo MakeGenericMethod(Type[] paramTypes)
@@ -33,7 +26,8 @@ namespace Copy.Internal
                     Params = m.GetParameters(),
                     GenericArgs = m.GetGenericArguments()
                 })
-                .Where(x => x.Params.Length == paramTypes.Length
+                .Where(x => x.Params.Length == 2 &&
+                            x.Params[1].ParameterType == paramTypes[1]
                             && x.GenericArgs.Length == 1
                             && x.Params[0].ParameterType == x.GenericArgs[0])
                 .Select(x => x.Method.MakeGenericMethod(paramTypes[0]))

@@ -13,11 +13,7 @@ namespace Billing.Database.EntityFramework
         {
             optionsBuilder
                 .UseNpgsql("Server=localhost;Port=5432;Database=billing;User ID=postgres;Password=11111111")
-                .UseSnakeCaseNamingConvention()
-                .UseCopyTypeMapping<BillingContext>(x =>
-                    x.MapType<Call>(m => m
-                        .MapProperty(nameof(Call.Duration), NpgsqlDbType.Integer)
-                        .MapProperty(nameof(Call.StartTime), NpgsqlDbType.Timestamp)));
+                .UseSnakeCaseNamingConvention();
         }
     }
 }

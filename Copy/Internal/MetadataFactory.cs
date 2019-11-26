@@ -1,11 +1,7 @@
-﻿using System;
-using System.Linq;
-using System.Reflection;
+﻿using System.Linq;
 using Copy.Internal.Models;
-using Copy.Internal.TypeMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using NpgsqlTypes;
 
 namespace Copy.Internal
 {
@@ -20,31 +16,22 @@ namespace Copy.Internal
             return new MetadataForModel
             {
                 TableName = entityType.GetTableName(),
-                EmitInfos = ExtractEmitInfo<T>(entityType, context.GetType())
+                EmitInfos = ExtractEmitInfo(entityType)
             };
         }
 
-        private EmitInfo[] ExtractEmitInfo<T>(IEntityType entityType, Type contextType)
+        private EmitInfo[] ExtractEmitInfo(IEntityType entityType)
         {
             var props = entityType.GetProperties();
-
-            return props.Select(p =>
+           
+            return props.Select(p => new EmitInfo
                 {
-                    var dbType = GetDbType(p.PropertyInfo, contextType);
-                    return new EmitInfo
-                    {
-                        PostgresName = p.GetColumnName(),
-                        Getter = p.PropertyInfo.GetMethod,
-                        PostgresType = dbType,
-                        WriteMethod = _writeMethodFactory.GetWriteMethod(p.PropertyInfo.PropertyType, dbType)
-                    };
+                    PostgresName = p.GetColumnName(),
+                    Getter = p.PropertyInfo.GetMethod,
+                    PostgresType = p.GetColumnType(),
+                    WriteMethod = _writeMethodFactory.GetWriteMethod(p.PropertyInfo.PropertyType)
                 })
                 .ToArray();
-        }
-
-        private NpgsqlDbType? GetDbType(PropertyInfo propertyInfo, Type contextType)
-        {
-            return TypeMappingStorage.TryGetDbType(contextType, propertyInfo.DeclaringType, propertyInfo.Name);
         }
     }
 }
