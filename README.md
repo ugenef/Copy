@@ -1,3 +1,4 @@
+[![CodeFactor](https://www.codefactor.io/repository/github/ugenef/copy/badge)](https://www.codefactor.io/repository/github/ugenef/copy)
 # Copy
 
 Copy is an Npgsql extension library for fast and effective row import to PostgreSQL.
